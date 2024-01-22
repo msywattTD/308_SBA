@@ -1,6 +1,6 @@
 // The provided course information.
 const CourseInfo = {
-    id: 451,
+    id: 4451,
     name: "Introduction to JavaScript"
   };
   
@@ -76,36 +76,57 @@ const CourseInfo = {
     }
   ];
   
-  function getLearnerData(course, ag, submissions) {
-    // here, we would process this data to achieve the desired result.
-    const result = [
-      {
-        id: 125,
-        avg: 0.985, // (47 + 150) / (50 + 150)
-        1: 0.94, // 47 / 50
-        2: 1.0 // 150 / 150
-      },
-      {
-        id: 132,
-        avg: 0.82, // (39 + 125) / (50 + 150)
-        1: 0.78, // 39 / 50
-        2: 0.833 // late: (140 - 15) / 150
-      }
-    ];
+//   function getLearnerData(course, ag, submissions) {
+//     // here, we would process this data to achieve the desired result.
+//     const result = [
+//       {
+//         id: 125,
+//         avg: 0.985, // (47 + 150) / (50 + 150)
+//         1: 0.94, // 47 / 50
+//         2: 1.0 // 150 / 150
+//       },
+//       {
+//         id: 132,
+//         avg: 0.82, // (39 + 125) / (50 + 150)
+//         1: 0.78, // 39 / 50
+//         2: 0.833 // late: (140 - 15) / 150
+//       }
+//     ];
+
+//     return result;
+//   }
   
-    return result;
-  }
-  
-  const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+//   const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
   
 //   console.log(result);
-
-  
+const result = [];
+const idSet = new Set([])
+getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
+ 
 //----------------------- START
-function courseValidation(){
-    if (AssignmentGroup.course_id != CourseInfo.id) {
-        return "Course ID's do not match."
-    } else return "hi"
+
+function getLearnerData(course, ag, submissions) {
+    courseValidation(course, ag) //course ID validation fires first
+    studentValidation(submissions)
 }
 
-console.log(courseValidation())
+console.log(result)
+
+
+function courseValidation(course, ag){ 
+    if (ag.course_id != course.id) {
+        return "Course ID's do not match."
+    }
+}
+
+
+function studentValidation(submissions) {
+    for (i = 0; i<submissions.length; i++) {
+        if (!idSet.has(submissions[i].learner_id)) { //student ID does not exist yet
+            let newStudent = {id: submissions[i].learner_id}
+            result.push(newStudent) //add student to result
+            idSet.add(submissions[i].learner_id) //add student's ID to set to prevent copies
+        }
+    }
+}
+// (submissions[i].learner_id != result[j].learner_id)
