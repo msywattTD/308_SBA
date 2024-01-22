@@ -98,7 +98,14 @@ const CourseInfo = {
   
   const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
   
-  console.log(result);
+//   console.log(result);
 
   
-  
+//----------------------- START
+function courseValidation(){
+    if (AssignmentGroup.course_id != CourseInfo.id) {
+        return "Course ID's do not match."
+    } else return "hi"
+}
+
+console.log(courseValidation())
