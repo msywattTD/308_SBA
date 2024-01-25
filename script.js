@@ -107,7 +107,8 @@ getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
 
 function getLearnerData(course, ag, submissions) {
     courseValidation(course, ag) //course ID validation fires first
-    studentValidation(submissions)
+    newStudent(submissions) // adds students to array 
+    addAssignment(ag, submissions)
 }
 
 console.log(result)
@@ -120,13 +121,55 @@ function courseValidation(course, ag){
 }
 
 
-function studentValidation(submissions) {
+function newStudent(submissions) {
     for (i = 0; i<submissions.length; i++) {
         if (!idSet.has(submissions[i].learner_id)) { //student ID does not exist yet
-            let newStudent = {id: submissions[i].learner_id}
+            let newStudent = {id: submissions[i].learner_id, avg: 0}
             result.push(newStudent) //add student to result
             idSet.add(submissions[i].learner_id) //add student's ID to set to prevent copies
         }
     }
 }
-// (submissions[i].learner_id != result[j].learner_id)
+
+
+function avgGrade(ag, submissions) {
+
+}
+
+function addAssignment(ag, submissions) {
+    for (i = 0; i<result.length; i++) {
+      let assignID = 0;
+      let assignScore = 0;
+      let assignMax = 0
+      let assignGrade = 0
+      let runningScore = 0
+      let runningMax = 0
+       for (j = 0; j<submissions.length; j++) {
+        
+        if(result[i].id == submissions[j].learner_id) {
+          assignID = submissions[j].assignment_id;
+          assignScore = submissions[j].submission.score;
+
+          for (k = 0; k<ag.assignments.length; k++) {
+            if (ag.assignments[k].id == submissions[j].assignment_id) {
+              assignMax = ag.assignments[k].points_possible
+              runningMax += assignMax;
+            }
+          }
+          runningScore += assignScore;
+          assignGrade = Math.round(assignScore / assignMax *1000)/1000
+          result[i][assignID] = assignGrade;
+          console.log(`Points Earned: ${runningScore}`)
+          console.log(`Points Possible: ${runningMax}`)
+        }
+       }
+       result[i].avg = runningScore / runningMax
+    }
+}
+
+// let assignID = submissions[j].assignment_id;
+// let assignScore = submissions[j].submission.score;
+// let assignMax = 0
+// let assignGrade = 0
+// let runningScore = 0
+// let runningMax = 0
