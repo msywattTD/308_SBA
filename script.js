@@ -132,10 +132,6 @@ function newStudent(submissions) {
 }
 
 
-function avgGrade(ag, submissions) {
-
-}
-
 function addAssignment(ag, submissions) { 
     for (i = 0; i<result.length; i++) { //loop through students
       let assignID = 0;
