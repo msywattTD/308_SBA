@@ -150,16 +150,22 @@ function addAssignment(ag, submissions) {
           assignScore = submissions[j].submission.score;
           let dueDate = 0
           const date = new Date()
-          let day = date.getDate()
-          let month = date.getMonth()+1
-          let year = date.getFullYear()
-          let today = `${year}-`+`${month}-`+`${day}`
+          const day = date.getDate()
+          const month = date.getMonth()+1
+          const year = date.getFullYear()
+          const today = `${year}-`+`${month}-`+`${day}`
 
           for (k = 0; k<ag.assignments.length; k++) {
             if (ag.assignments[k].id == submissions[j].assignment_id) {
               dueDate = ag.assignments[k].due_at
-              let submitDate = submissions[j].submission.submitted_at
+              const submitDate = submissions[j].submission.submitted_at
               if (dueDate > today) {continue}
+
+              try {
+                100 / ag.assignments[k].points_possible
+              } catch (error) {
+                console.error(error)
+              }
               assignMax = ag.assignments[k].points_possible
               runningMax += assignMax;
 
