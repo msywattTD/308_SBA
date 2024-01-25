@@ -148,18 +148,26 @@ function addAssignment(ag, submissions) {
         if(result[i].id == submissions[j].learner_id) {
           assignID = submissions[j].assignment_id;
           assignScore = submissions[j].submission.score;
+          let dueDate = 0
+          const date = new Date()
+          let day = date.getDate()
+          let month = date.getMonth()+1
+          let year = date.getFullYear()
+          let today = `${year}-`+`${month}-`+`${day}`
 
           for (k = 0; k<ag.assignments.length; k++) {
             if (ag.assignments[k].id == submissions[j].assignment_id) {
+              dueDate = ag.assignments[k].due_at
+              let submitDate = submissions[j].submission.submitted_at
+              if (dueDate > today) {continue}
               assignMax = ag.assignments[k].points_possible
               runningMax += assignMax;
 
-              let dueDate = ag.assignments[k].due_at
-              let submitDate = submissions[j].submission.submitted_at
               submitDate > dueDate ? assignScore -= (assignMax*.1) : null
+              runningScore += assignScore;
             }
           }
-          runningScore += assignScore;
+          if (dueDate > today) {continue}
           assignGrade = Math.round(assignScore / assignMax *1000)/1000
           result[i][assignID] = assignGrade;
         }
